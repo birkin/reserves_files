@@ -5,16 +5,16 @@ services:
     build: .
     container_name: django-web-container
     volumes:
-      - ../:/sr_project_stuff
-      - ../DBs:/sr_project_stuff/DBs
-      - ../logs:/sr_project_stuff/logs
-      - .:/sr_project_stuff/code
+      - ../:/container_project_stuff
+      - ../DBs:/container_project_stuff/DBs
+      - ../logs:/container_project_stuff/logs
+      - .:/container_project_stuff/code
     ports:
       - "8000:8000"
 
     environment:
       - FOO_KEY=bar_val
-      - RES_FILES__ENV_SETTINGS_PATH=config/settings_localdev_env.sh
+      - RES_FILES__ENV_SETTINGS_PATH=config/settings_localdev.sh
 
     env_file: ./config/settings_localdev_env.sh
 
