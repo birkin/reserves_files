@@ -34,7 +34,7 @@ export RES_FILES__DATABASES_JSON='
       "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "HOST": "",
-        "NAME": "../DBs/dj_res_files.sqlite",
+        "NAME": "../DB/dj_res_files.sqlite3",
         "PASSWORD": "",
         "PORT": "",
         "USER": ""
