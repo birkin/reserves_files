@@ -18,9 +18,12 @@ from django.urls import path
 from reserves_files_app import views
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    ## main url -----------------------------------------------------
+    path( 'files/<course_code>/<file_name>/', views.file_manager, name='file_manager_url' ),
+    ## other  -------------------------------------------------------
     path( '', views.root, name='root_url' ),
-    path( 'info/', views.info, name='info_url' ),
     path( 'error_check/', views.error_check, name='error_check_url' ),
+    path( 'info/', views.info, name='info_url' ),
     path( 'version/', views.version, name='version_url' ),
+    # path('admin/', admin.site.urls),
 ]

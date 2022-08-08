@@ -14,10 +14,13 @@ log = logging.getLogger(__name__)
 # ===========================
 
 
+def file_manager( request, course_code: str, file_name: str ):
+    combined = f'{course_code}/{file_name}'
+    return HttpResponse( f'file-manager coming for ``{combined}``' )
+
+
 def info( request ):
     return HttpResponse( 'Hello, world. You\'re at the info page.' )
-
-
 
 
 # ===========================
