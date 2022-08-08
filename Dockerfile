@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /container_project_stuff/code
 RUN mkdir /container_project_stuff/logs
-RUN mkdir /container_project_stuff/DBs
+RUN mkdir /container_project_stuff/DB
 
 ## set up the python environment
 COPY ./config/requirements.txt /container_project_stuff/code/

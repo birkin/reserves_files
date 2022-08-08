@@ -6,16 +6,21 @@ services:
     container_name: django-web-container
     volumes:
       - ../:/container_project_stuff
-      - ../DBs:/container_project_stuff/DBs
+      - ../DB:/container_project_stuff/DB
       - ../logs:/container_project_stuff/logs
       - .:/container_project_stuff/code
     ports:
       - "8000:8000"
 
-    environment:
-      - FOO_KEY=bar_val
-      - RES_FILES__ENV_SETTINGS_PATH=config/settings_localdev.sh
+    # environment:
+    #   - FOO_KEY=bar_val
+    #   - RES_FILES__ENV_SETTINGS_PATH=config/settings_localdev.sh
 
     env_file: ./config/settings_localdev_env.sh
+
+    # command: /bin/bash -c "
+    #   if test -f ../DB/dj_res_files.sqlite3; then echo 'dj_res_files.sqlite3-file-exists-not-copying'; else cp ../stolen_relations_start_data/DISA.db ../DBs/DISA.sqlite; fi
+    #   && python manage.py runserver 0.0.0.0:8000
+    #   "
 
     command: /bin/bash -c "python manage.py runserver 0.0.0.0:8000"
