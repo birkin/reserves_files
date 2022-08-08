@@ -15,6 +15,7 @@ log = logging.getLogger(__name__)
 
 
 def file_manager( request, course_code: str, file_name: str ):
+    log.debug( '\n\nstarting file_manager()' )
     combined = f'{course_code}/{file_name}'
     return HttpResponse( f'file-manager coming for ``{combined}``' )
 
