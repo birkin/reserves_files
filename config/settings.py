@@ -162,7 +162,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'easyborrow_stats_app': {
+        'reserves_files_app': {
             'handlers': ['logfile'],
             'level': os.environ['RES_FILES__LOG_LEVEL'],
             'propagate': False
