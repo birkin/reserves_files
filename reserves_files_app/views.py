@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFou
 from django.shortcuts import render
 from django.urls import reverse
 from reserves_files_app import settings_app
-from reserves_files_app.lib import version_helper
+from reserves_files_app.lib import shib, version_helper
 from reserves_files_app.models import Match
 from wsgiref.util import FileWrapper
 
@@ -25,6 +25,8 @@ def file_manager( request, course_code: str, file_name: str ):
     path_obj = pathlib.Path( filepath )
     if path_obj.is_file() == False:
         return HttpResponseNotFound( f'404 / Not Found' )
+    ## check shib ---------------------------------------------------
+    shib_info: dict = shib.extract_info( request.META )
     ## check match --------------------------------------------------
     try: 
         Match.objects.get( filename=file_name, course_code=course_code )
