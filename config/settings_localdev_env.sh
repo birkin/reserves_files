@@ -69,17 +69,15 @@ export RES_FILES__CACHES_JSON='
 }
 '
 
-
 ## ============================================================================
 ## app
 ## ============================================================================
 
 export RES_FILES__README_URL="https://github.com/birkin/reserves_files_project/blob/main/README.md"
 
+export RES_FILES__FILE_DIR_PATH="../files"
 
-####################
-## auth
-####################
+## auth -------------------------------------------------------------
 
 export RES_FILES__SUPER_USERS_JSON='[
 ]'
@@ -99,14 +97,12 @@ export RES_FILES__TEST_META_DCT_JSON='{
   "Shibboleth-sn": "Last"
 }'
 
-export RES_FILES__LOGIN_PROBLEM_EMAIL="sr_problems@domain.edu"
+export RES_FILES__LOGIN_PROBLEM_EMAIL="reserves_files_problems@domain.edu"
 
-####################
-## basic auth
-####################
+## basic auth -------------------------------------------------------
 
 export RES_FILES__BROWSE_USERPASS_JSON='[
   { "example_username": "example_password" }
 ]'
 
-## end ========================================================================
+## end --------------------------------------------------------------
