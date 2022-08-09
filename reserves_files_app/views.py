@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from reserves_files_app import settings_app
 from reserves_files_app.lib import version_helper
+from reserves_files_app.models import Match
 from wsgiref.util import FileWrapper
 
 log = logging.getLogger(__name__)
@@ -24,6 +25,11 @@ def file_manager( request, course_code: str, file_name: str ):
     path_obj = pathlib.Path( filepath )
     if path_obj.is_file() == False:
         return HttpResponseNotFound( f'404 / Not Found' )
+    ## check match --------------------------------------------------
+    try: 
+        Match.objects.get( filename=file_name, course_code=course_code )
+    except:
+        return HttpResponseNotFound( f'404 / File-Course-Match Not Found' )
     ## all good -----------------------------------------------------
     chunk_size = 512
     response = StreamingHttpResponse(
@@ -32,6 +38,24 @@ def file_manager( request, course_code: str, file_name: str ):
         )
     response['Content-Length'] = os.path.getsize(filepath)    
     return response
+
+
+# def file_manager( request, course_code: str, file_name: str ):
+#     """ Streams file to browser. """
+#     log.debug( '\n\nstarting file_manager()' )
+#     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
+#     ## check existence ----------------------------------------------
+#     path_obj = pathlib.Path( filepath )
+#     if path_obj.is_file() == False:
+#         return HttpResponseNotFound( f'404 / Not Found' )
+#     ## all good -----------------------------------------------------
+#     chunk_size = 512
+#     response = StreamingHttpResponse(
+#         FileWrapper( open(filepath, 'rb'), chunk_size ),
+#         content_type=mimetypes.guess_type(filepath)[0]
+#         )
+#     response['Content-Length'] = os.path.getsize(filepath)    
+#     return response
 
 
 # def file_manager( request, course_code: str, file_name: str ):
