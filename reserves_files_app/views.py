@@ -1,4 +1,4 @@
-import datetime, json, logging, mimetypes, os
+import datetime, json, logging, mimetypes, os, pathlib
 
 from django.conf import settings as project_settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect, StreamingHttpResponse
@@ -17,10 +17,14 @@ log = logging.getLogger(__name__)
 
 
 def file_manager( request, course_code: str, file_name: str ):
-    """ Proof of concept... """
+    """ Streams file to browser. """
     log.debug( '\n\nstarting file_manager()' )
-    ## setup --------------------------------------------------------
     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
+    ## check existence ----------------------------------------------
+    path_obj = pathlib.Path( filepath )
+    if path_obj.is_file() == False:
+        return HttpResponseNotFound( f'404 / Not Found' )
+    ## all good -----------------------------------------------------
     chunk_size = 512
     response = StreamingHttpResponse(
         FileWrapper( open(filepath, 'rb'), chunk_size ),
@@ -36,45 +40,11 @@ def file_manager( request, course_code: str, file_name: str ):
 #     ## setup --------------------------------------------------------
 #     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
 #     chunk_size = 512
-#     guessed_mimetype = 'application/pdf'
-#     guessed_mimetypes: tuple = mimetypes.guess_type(filepath)  # eg ('application/pdf', None)
-#     log.debug( f'type(guessed_mimetypes), ``{type(guessed_mimetypes)}``' )
-#     log.debug( f'guessed_mimetypes, ``{guessed_mimetypes}``' )
-#     if guessed_mimetypes[0]:
-#         guessed_mimetype: str = guessed_mimetypes[0]
-#     log.debug( f'guessed_mimetype, ``{guessed_mimetype}``' )
-#     content_size: int = os.path.getsize( filepath )
-#     ## the response -------------------------------------------------
 #     response = StreamingHttpResponse(
 #         FileWrapper( open(filepath, 'rb'), chunk_size ),
-#         content_type=guessed_mimetype
+#         content_type=mimetypes.guess_type(filepath)[0]
 #         )
-#     response['Content-Length'] = content_size    
-#     return response
-
-
-# def file_manager( request, course_code: str, file_name: str ):
-#     """ Proof of concept... """
-#     log.debug( '\n\nstarting file_manager()' )
-#     # filepath = f'{settings_app.FILES_DIR_PATH}/{course_code}/{file_name}/'
-#     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
-#     log.debug( f'filepath, ``{filepath}``' )
-#     def file_iterator( path: str, chunk_size=512 ):
-#         print( 'hereA' )
-#         with open( path, 'rb' ) as f:
-#             while True:
-#                 c = f.read(chunk_size)
-#                 if c:
-#                     yield c
-#                 else:
-#                     break
-#         f.close()
-#     response = StreamingHttpResponse( file_iterator(filepath) )
-#     response['Content-Type'] = 'application/pdf'
-#     # response['Content-Type'] = 'application/octet-stream'
-#     # except:
-#     #     log.exception( 'problem with request; see logs' )
-#     #     response = HttpResponseNotFound( 'z404 / Not Found' )
+#     response['Content-Length'] = os.path.getsize(filepath)    
 #     return response
 
 
