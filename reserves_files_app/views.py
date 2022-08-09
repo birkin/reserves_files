@@ -1,4 +1,4 @@
-import datetime, json, logging, mimetypes, os, pathlib
+import datetime, json, logging, mimetypes, os, pathlib, pprint
 
 from django.conf import settings as project_settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect, StreamingHttpResponse
@@ -26,6 +26,7 @@ def file_manager( request, course_code: str, file_name: str ):
     if path_obj.is_file() == False:
         return HttpResponseNotFound( f'404 / Not Found' )
     ## check shib ---------------------------------------------------
+    log.debug( f'request.__dict__, ``{pprint.pformat(request.__dict__)}``' )
     shib_info: dict = shib.extract_info( request.META )
     ## check match --------------------------------------------------
     try: 
