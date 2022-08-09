@@ -14,7 +14,8 @@ class Match( models.Model ):
     def __str__(self):
         return str( self.filename )
 
-    # class Meta:
-    #     verbose_name_plural = 'matches'
+    class Meta:
+        ordering = ['-working_timestamp']
+        verbose_name_plural = "Matches"
 
     ## end Match()
