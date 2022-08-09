@@ -47,7 +47,7 @@ export RES_FILES__STATIC_ROOT="/static/"
 
 export RES_FILES__EMAIL_HOST="localhost"  
 export RES_FILES__EMAIL_PORT="1026"  # will be converted to int in settings.py
-export RES_FILES__SERVER_EMAIL="donotreply_stolen-relations-project@domain.edu"
+export RES_FILES__SERVER_EMAIL="donotreply_reserves-files-project@domain.edu"
 
 export RES_FILES__LOG_PATH="../logs/reserves_files.log"
 export RES_FILES__LOG_LEVEL="DEBUG"
