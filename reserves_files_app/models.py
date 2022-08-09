@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.utils import timezone
 
 
 class Match( models.Model ):
@@ -8,14 +9,14 @@ class Match( models.Model ):
     filename = models.CharField( max_length=255 )
     course_code = models.CharField( max_length=50 )
     path = models.TextField()
-    working_timestamp = models.DateTimeField( auto_now_add=True )
-    # working_timestamp = models.DateTimeField(null=True, core=True)
+    # created = models.DateTimeField( auto_now_add=True )
+    created = models.DateTimeField( default=timezone.now )
 
     def __str__(self):
         return str( self.filename )
 
     class Meta:
-        ordering = ['-working_timestamp']
+        ordering = ['-created']
         verbose_name_plural = "Matches"
 
     ## end Match()

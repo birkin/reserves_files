@@ -4,13 +4,13 @@ from reserves_files_app.models import Match
 
 class MatchAdmin( admin.ModelAdmin ):
 
-    list_display = ['id', 'filename', 'course_code', 'path', 'working_timestamp']
+    list_display = ['id', 'filename', 'course_code', 'path', 'created']
 
     readonly_fields = [ 'working_timestamp', 'id' ]
 
-    search_fields = [ 'id', 'filename', 'course_code', 'path', 'working_timestamp' ]
+    search_fields = [ 'id', 'filename', 'course_code', 'path', 'created' ]
 
-    date_hierarchy = 'working_timestamp'
+    date_hierarchy = 'created'
 
     save_on_top = True
 
