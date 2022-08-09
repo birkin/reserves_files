@@ -6,7 +6,7 @@ class MatchAdmin( admin.ModelAdmin ):
 
     list_display = ['id', 'filename', 'course_code', 'path', 'created']
 
-    readonly_fields = [ 'working_timestamp', 'id' ]
+    readonly_fields = [ 'created', 'id' ]
 
     search_fields = [ 'id', 'filename', 'course_code', 'path', 'created' ]
 
