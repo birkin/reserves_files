@@ -19,7 +19,7 @@ from reserves_files_app import views
 
 urlpatterns = [
     ## main url -----------------------------------------------------
-    path( 'files/<course_code>/<file_name>/', views.file_manager, name='file_manager_url' ),
+    path( 'resources/<course_code>/<file_name>/', views.file_manager, name='resource_manager_url' ),
     ## other  -------------------------------------------------------
     path( '', views.root, name='root_url' ),
     path( 'error_check/', views.error_check, name='error_check_url' ),
