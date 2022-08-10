@@ -12,8 +12,8 @@ services:
     ports:
       - "8000:8000"
 
-    # environment:
-    #   - RES_FILES__ENV_SETTINGS_PATH=config/settings_localdev.sh
+    environment:
+      - RES_FILES__ENV_SETTINGS_PATH=config/settings_localdev_env.sh  # needed for wsgi.py
 
     env_file: ./config/settings_localdev_env.sh
 
