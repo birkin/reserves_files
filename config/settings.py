@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%&mypq=5xo2wa&u8+(f#((+!v^z__hlv@^pdk1_+w_y!j*0jfj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = json.loads( os.environ['RES_FILES__DEBUG_JSON'] )
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = json.loads( os.environ['RES_FILES__ALLOWED_HOSTS'] )
 
 
 # Application definition
