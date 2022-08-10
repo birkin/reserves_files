@@ -1,7 +1,7 @@
 import datetime, json, logging, mimetypes, os, pathlib, pprint
 
 from django.conf import settings as project_settings
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseRedirect, StreamingHttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from reserves_files_app import settings_app
@@ -26,8 +26,11 @@ def file_manager( request, course_code: str, file_name: str ):
     if path_obj.is_file() == False:
         return HttpResponseNotFound( f'404 / Not Found' )
     ## check shib ---------------------------------------------------
-    log.debug( f'request.__dict__, ``{pprint.pformat(request.__dict__)}``' )
-    shib_info: dict = shib.extract_info( request.META )
+    # log.debug( f'request.__dict__, ``{pprint.pformat(request.__dict__)}``' )
+    shib_info: dict = shib.extract_info( request.META )  # contains eppn (str) and groups (list)
+    shib_valid: bool = shib.authz_check( shib_info )
+    if shib_valid == False:
+        return HttpResponseForbidden( f'403 / Forbidden. If you believe you should be able to view reserves-files for the class "{course_code}", contact X.' )
     ## check match --------------------------------------------------
     try: 
         Match.objects.get( filename=file_name, course_code=course_code )
