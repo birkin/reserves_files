@@ -95,7 +95,7 @@ export RES_FILES__TEST_META_DCT_JSON='{
   "Shibboleth-mail": "first_last@domain.edu",
   "Shibboleth-givenName": "First",
   "Shibboleth-sn": "Last",
-  "Shibboleth-isMemberOf": "aa:bb:cc;dd:ee:ff;gg:hh;ii",
+  "Shibboleth-isMemberOf": "aa:bb:cc;dd:ee:ff;gg:hh;ii"
 }'
 
 export RES_FILES__LOGIN_PROBLEM_EMAIL="reserves_files_problems@domain.edu"
