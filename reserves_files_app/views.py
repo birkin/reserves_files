@@ -24,6 +24,7 @@ def file_manager( request, course_code: str, file_name: str ):
     ## check existence ----------------------------------------------
     path_obj = pathlib.Path( filepath )
     if path_obj.is_file() == False:
+        log.debug( f'filepath, ``{filepath}`` not found' )
         return HttpResponseNotFound( f'404 / Not Found' )
     ## check shib ---------------------------------------------------
     # log.debug( f'request.__dict__, ``{pprint.pformat(request.__dict__)}``' )
@@ -35,8 +36,10 @@ def file_manager( request, course_code: str, file_name: str ):
     try: 
         Match.objects.get( filename=file_name, course_code=course_code )
     except:
+        log.debug( f'no db entry found for course_code, ``{course_code}`` and file_name, ``{file_name}``' )
         return HttpResponseNotFound( f'404 / File-Course-Match Not Found' )
     ## all good -----------------------------------------------------
+    log.debug( f'all good; about to stream response' )
     chunk_size = 512
     response = StreamingHttpResponse(
         FileWrapper( open(filepath, 'rb'), chunk_size ),
