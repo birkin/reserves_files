@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 
 
 def file_manager( request, course_code: str, file_name: str ):
-    """ Streams file to browser. """
+    """ Manages existence-check, and course-to-file matching, and streams file to browser. """
     log.debug( '\n\nstarting file_manager()' )
     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
     log.debug( f'filepath, ``{filepath}``' )
@@ -68,18 +68,26 @@ def file_manager( request, course_code: str, file_name: str ):
 #     return response
 
 
-# def file_manager( request, course_code: str, file_name: str ):
-#     """ Proof of concept... """
-#     log.debug( '\n\nstarting file_manager()' )
-#     ## setup --------------------------------------------------------
-#     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
-#     chunk_size = 512
-#     response = StreamingHttpResponse(
-#         FileWrapper( open(filepath, 'rb'), chunk_size ),
-#         content_type=mimetypes.guess_type(filepath)[0]
-#         )
-#     response['Content-Length'] = os.path.getsize(filepath)    
-#     return response
+def adder( request ):
+    """ Manages adding a match-entry. """
+    log.debug( '\n\nstarting adder()' )
+    if request.method != 'POST':
+        log.debug( 'invalid, not POST' )
+        return HttpResponseBadRequest( '400 / Bad Request' )
+    course_code = request.POST.get( 'course_code', '' )
+    file_name = request.POST.get( 'file_name', '' )
+    token = request.POST.get( 'token', '' )
+    params_good = False
+    course_code_param_good = False if course_code == '' else True
+    file_name_param_good = False if file_name == '' else True
+    token_param_good = False if token == '' else True
+    log.debug( f'course_code_param_good, ``{course_code_param_good}``; file_name_param_good, ``{file_name_param_good}`` ' )
+    if course_code == '':
+        log.debug( 'invalid, not POST' )
+         or file_name == '' or token == '':
+        log.debug( 'invalid, not POST' )
+        return HttpResponseBadRequest( '400 / Bad Request' )
+
 
 
 def info( request ):
