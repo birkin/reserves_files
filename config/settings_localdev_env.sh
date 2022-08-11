@@ -102,8 +102,8 @@ export RES_FILES__LOGIN_PROBLEM_EMAIL="reserves_files_problems@domain.edu"
 
 ## basic auth -------------------------------------------------------
 
-export RES_FILES__BROWSE_USERPASS_JSON='[
-  { "example_username": "example_password" }
-]'
+# export RES_FILES__BROWSE_USERPASS_JSON='[
+#   { "example_username": "example_password" }
+# ]'
 
 ## end --------------------------------------------------------------
