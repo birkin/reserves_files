@@ -21,10 +21,11 @@ def file_manager( request, course_code: str, file_name: str ):
     """ Streams file to browser. """
     log.debug( '\n\nstarting file_manager()' )
     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
+    log.debug( f'filepath, ``{filepath}``' )
     ## check existence ----------------------------------------------
     path_obj = pathlib.Path( filepath )
     if path_obj.is_file() == False:
-        log.debug( f'filepath, ``{filepath}`` not found' )
+        log.debug( 'filepath not found' )
         return HttpResponseNotFound( f'404 / Not Found' )
     ## check shib ---------------------------------------------------
     # log.debug( f'request.__dict__, ``{pprint.pformat(request.__dict__)}``' )
