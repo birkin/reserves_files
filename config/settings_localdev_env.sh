@@ -87,15 +87,15 @@ export RES_FILES__STAFF_USERS_JSON='
   "eppn@domain.edu"
 ]'
 
-export RES_FILES__STAFF_GROUP="admin_editors"
+export RES_FILES__STAFF_GROUPER_GROUP="the:group"
 
 export RES_FILES__TEST_META_DCT_JSON='{
-  "Shibboleth-eppn": "eppn@domain.edu",
+  "Shibboleth-eppn": "eppn@brown.edu",
   "Shibboleth-brownNetId": "First_Last",
   "Shibboleth-mail": "first_last@domain.edu",
   "Shibboleth-givenName": "First",
   "Shibboleth-sn": "Last",
-  "Shibboleth-isMemberOf": "aa:bb:cc;dd:ee:ff;gg:hh;ii"
+  "Shibboleth-isMemberOf": "aa:bb:cc;dd:ee:ff;the:group;gg:hh"
 }'
 
 export RES_FILES__LOGIN_PROBLEM_EMAIL="reserves_files_problems@domain.edu"
