@@ -49,6 +49,8 @@ def file_manager( request, course_code: str, file_name: str ):
     response['Content-Length'] = os.path.getsize(filepath)    
     return response
 
+    ## end def file_manager()
+
 
 # def file_manager( request, course_code: str, file_name: str ):
 #     """ Streams file to browser. """
@@ -111,9 +113,15 @@ def adder( request ):
         log.debug( 'filepath not found' )
         return HttpResponseBadRequest( '400 / Bad Request' )
     ## add match ----------------------------------------------------
-
-
-
+    from reserves_files_app.models import Match
+    match = Match()
+    match.course_code: str = course_code
+    match.filename: str = file_name
+    match.save()
+    log.debug( 'save successful' )
+    return HttpResponse( '200 / OK' )
+    
+    ## end def adder()
 
 
 def info( request ):
