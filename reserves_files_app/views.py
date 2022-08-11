@@ -28,7 +28,7 @@ def file_manager( request, course_code: str, file_name: str ):
     ## check shib ---------------------------------------------------
     # log.debug( f'request.__dict__, ``{pprint.pformat(request.__dict__)}``' )
     shib_info: dict = shib.extract_info( request.META )  # contains eppn (str) and groups (list)
-    shib_valid: bool = shib.authz_check( shib_info )
+    shib_valid: bool = shib.authz_check( shib_info, course_code )
     if shib_valid == False:
         return HttpResponseForbidden( f'403 / Forbidden. If you believe you should be able to view reserves-files for the class "{course_code}", contact X.' )
     ## check match --------------------------------------------------
