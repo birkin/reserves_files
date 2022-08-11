@@ -71,9 +71,11 @@ def file_manager( request, course_code: str, file_name: str ):
 def adder( request ):
     """ Manages adding a match-entry. """
     log.debug( '\n\nstarting adder()' )
+    ## check for POST -----------------------------------------------
     if request.method != 'POST':
         log.debug( 'invalid, not POST' )
         return HttpResponseBadRequest( '400 / Bad Request' )
+    ## check POST params --------------------------------------------
     course_code = request.POST.get( 'course_code', '' )
     file_name = request.POST.get( 'file_name', '' )
     token = request.POST.get( 'token', '' )
@@ -82,11 +84,12 @@ def adder( request ):
     file_name_param_good = False if file_name == '' else True
     token_param_good = False if token == '' else True
     log.debug( f'course_code_param_good, ``{course_code_param_good}``; file_name_param_good, ``{file_name_param_good}`` ' )
-    if course_code == '':
-        log.debug( 'invalid, not POST' )
-         or file_name == '' or token == '':
-        log.debug( 'invalid, not POST' )
+    if course_code_param_good == False or file_name_param_good == False or token_param_good == False:
+        log.debug( 'invalid, bad param' )
         return HttpResponseBadRequest( '400 / Bad Request' )
+    ## check token --------------------------------------------------
+    incoming_ip: str = 'foo'
+    incoming_token: str = request.POST['token']
 
 
 
