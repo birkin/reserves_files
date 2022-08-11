@@ -104,6 +104,13 @@ def adder( request ):
     if token_good == False:
         return HttpResponseBadRequest( '400 / Bad Request' )
     ## check that file exists ---------------------------------------
+    filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
+    log.debug( f'filepath, ``{filepath}``' )
+    path_obj = pathlib.Path( filepath )
+    if path_obj.is_file() == False:
+        log.debug( 'filepath not found' )
+        return HttpResponseBadRequest( '400 / Bad Request' )
+    ## add match ----------------------------------------------------
 
 
 
