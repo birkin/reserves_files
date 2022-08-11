@@ -23,15 +23,16 @@ def authz_check( shib_info: dict, course_code: str ) -> bool:
     eppn: str = shib_info['eppn']
     groups: list = shib_info['groups']
     course_code_to_check = course_code.replace( '-', ':' )
+    log.debug( f'course_code_to_check' )
     ( eppn_check_ok, staff_check_ok, course_code_check_ok ) = ( False, False, False )
     if eppn[-10:] == '@brown.edu':
         eppn_check_ok = True
     for entry in groups:
-        group: str = entry
+        group: str = entry  # for type-annotation
         if settings_app.STAFF_GROUP in group:
             staff_check_ok = True
             break
-        if course_code_to_check in group:
+        if course_code_to_check.lower() in group.lower():
             course_code_check_ok = True
             break
     log.debug( f'eppn_check_ok, ``{eppn_check_ok}``; staff_check_ok, ``{staff_check_ok}``; course_code_check_ok, ``{course_code_check_ok}``' )
