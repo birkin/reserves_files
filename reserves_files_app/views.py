@@ -88,8 +88,24 @@ def adder( request ):
         log.debug( 'invalid, bad param' )
         return HttpResponseBadRequest( '400 / Bad Request' )
     ## check token --------------------------------------------------
-    incoming_ip: str = 'foo'
+    token_good = False
     incoming_token: str = request.POST['token']
+    incoming_ip: str = request.META.get('REMOTE_ADDR', '')
+    log.debug( f'incoming_token, ``{incoming_token}``; incoming_ip, ``{incoming_ip}``' )
+    legit_adders: list = settings_app.LEGIT_ADDERS
+    for entry in legit_adders:
+        adder: dict = entry
+        legit_token: str = adder['token']
+        legit_ip: str = adder['ip']
+        if incoming_token == legit_token and incoming_ip == legit_ip:
+            token_good = True
+            break
+    log.debug( f'token_good, ``{token_good}``' )
+    if token_good == False:
+        return HttpResponseBadRequest( '400 / Bad Request' )
+    ## check that file exists ---------------------------------------
+
+
 
 
 
