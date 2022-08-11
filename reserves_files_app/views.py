@@ -115,12 +115,12 @@ def adder( request ):
     ## add match ----------------------------------------------------
     from reserves_files_app.models import Match
     match = Match()
-    match.course_code: str = course_code
-    match.filename: str = file_name
+    match.course_code = course_code
+    match.filename = file_name
     match.save()
     log.debug( 'save successful' )
     return HttpResponse( '200 / OK' )
-    
+
     ## end def adder()
 
 
