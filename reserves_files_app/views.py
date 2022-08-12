@@ -4,6 +4,7 @@ from django.conf import settings as project_settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseNotFound, HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from reserves_files_app import settings_app
 from reserves_files_app.lib import shib, version_helper
 from reserves_files_app.models import Match
@@ -70,14 +71,17 @@ def file_manager( request, course_code: str, file_name: str ):
 #     return response
 
 
+@csrf_exempt
 def adder( request ):
     """ Manages adding a match-entry. """
     log.debug( '\n\nstarting adder()' )
+    log.debug( f'request.__dict__, ``{pprint.pformat(request.__dict__)}``' )
     ## check for POST -----------------------------------------------
     if request.method != 'POST':
         log.debug( 'invalid, not POST' )
         return HttpResponseBadRequest( '400 / Bad Request' )
     ## check POST params --------------------------------------------
+    log.debug( f'request.POST, ``{pprint.pformat(request.POST)}``' )
     course_code = request.POST.get( 'course_code', '' )
     file_name = request.POST.get( 'file_name', '' )
     token = request.POST.get( 'token', '' )
