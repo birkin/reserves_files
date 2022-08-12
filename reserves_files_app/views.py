@@ -53,24 +53,6 @@ def file_manager( request, course_code: str, file_name: str ):
     ## end def file_manager()
 
 
-# def file_manager( request, course_code: str, file_name: str ):
-#     """ Streams file to browser. """
-#     log.debug( '\n\nstarting file_manager()' )
-#     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
-#     ## check existence ----------------------------------------------
-#     path_obj = pathlib.Path( filepath )
-#     if path_obj.is_file() == False:
-#         return HttpResponseNotFound( f'404 / Not Found' )
-#     ## all good -----------------------------------------------------
-#     chunk_size = 512
-#     response = StreamingHttpResponse(
-#         FileWrapper( open(filepath, 'rb'), chunk_size ),
-#         content_type=mimetypes.guess_type(filepath)[0]
-#         )
-#     response['Content-Length'] = os.path.getsize(filepath)    
-#     return response
-
-
 @csrf_exempt
 def adder( request ):
     """ Manages adding a match-entry. """
@@ -81,7 +63,7 @@ def adder( request ):
         log.debug( 'invalid, not POST' )
         return HttpResponseBadRequest( '400 / Bad Request' )
     ## check POST params --------------------------------------------
-    log.debug( f'request.POST, ``{pprint.pformat(request.POST)}``' )
+    # log.debug( f'request.POST, ``{pprint.pformat(request.POST)}``' )
     course_code = request.POST.get( 'course_code', '' )
     file_name = request.POST.get( 'file_name', '' )
     token = request.POST.get( 'token', '' )
@@ -97,7 +79,7 @@ def adder( request ):
     token_good = False
     incoming_token: str = request.POST['token']
     incoming_ip: str = request.META.get('REMOTE_ADDR', '')
-    log.debug( f'incoming_token, ``{incoming_token}``; incoming_ip, ``{incoming_ip}``' )
+    log.debug( f'incoming_token, ``{incoming_token[0:3]}``; incoming_ip, ``{incoming_ip}``' )
     legit_adders: list = settings_app.LEGIT_ADDERS
     for entry in legit_adders:
         adder: dict = entry
@@ -116,8 +98,12 @@ def adder( request ):
     if path_obj.is_file() == False:
         log.debug( 'filepath not found' )
         return HttpResponseBadRequest( '400 / Bad Request' )
+    ## check for duplicate ------------------------------------------
+    matches: list = list( Match.objects.filter(course_code=course_code, filename=file_name) )
+    if len( matches ) > 0:
+        log.debug( 'not adding; item already exists' )
+        return HttpResponseBadRequest( '400 / Bad Request' )
     ## add match ----------------------------------------------------
-    from reserves_files_app.models import Match
     match = Match()
     match.course_code = course_code
     match.filename = file_name
@@ -126,6 +112,64 @@ def adder( request ):
     return HttpResponse( '200 / OK' )
 
     ## end def adder()
+
+
+# @csrf_exempt
+# def adder( request ):
+#     """ Manages adding a match-entry. """
+#     log.debug( '\n\nstarting adder()' )
+#     log.debug( f'request.__dict__, ``{pprint.pformat(request.__dict__)}``' )
+#     ## check for POST -----------------------------------------------
+#     if request.method != 'POST':
+#         log.debug( 'invalid, not POST' )
+#         return HttpResponseBadRequest( '400 / Bad Request' )
+#     ## check POST params --------------------------------------------
+#     log.debug( f'request.POST, ``{pprint.pformat(request.POST)}``' )
+#     course_code = request.POST.get( 'course_code', '' )
+#     file_name = request.POST.get( 'file_name', '' )
+#     token = request.POST.get( 'token', '' )
+#     params_good = False
+#     course_code_param_good = False if course_code == '' else True
+#     file_name_param_good = False if file_name == '' else True
+#     token_param_good = False if token == '' else True
+#     log.debug( f'course_code_param_good, ``{course_code_param_good}``; file_name_param_good, ``{file_name_param_good}`` ' )
+#     if course_code_param_good == False or file_name_param_good == False or token_param_good == False:
+#         log.debug( 'invalid, bad param' )
+#         return HttpResponseBadRequest( '400 / Bad Request' )
+#     ## check token --------------------------------------------------
+#     token_good = False
+#     incoming_token: str = request.POST['token']
+#     incoming_ip: str = request.META.get('REMOTE_ADDR', '')
+#     log.debug( f'incoming_token, ``{incoming_token}``; incoming_ip, ``{incoming_ip}``' )
+#     legit_adders: list = settings_app.LEGIT_ADDERS
+#     for entry in legit_adders:
+#         adder: dict = entry
+#         legit_token: str = adder['token']
+#         legit_ip: str = adder['ip']
+#         if incoming_token == legit_token and incoming_ip == legit_ip:
+#             token_good = True
+#             break
+#     log.debug( f'token_good, ``{token_good}``' )
+#     if token_good == False:
+#         return HttpResponseBadRequest( '400 / Bad Request' )
+#     ## check that file exists ---------------------------------------
+#     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
+#     log.debug( f'filepath, ``{filepath}``' )
+#     path_obj = pathlib.Path( filepath )
+#     if path_obj.is_file() == False:
+#         log.debug( 'filepath not found' )
+#         return HttpResponseBadRequest( '400 / Bad Request' )
+#     ## check for duplicate ------------------------------------------s
+#     ## add match ----------------------------------------------------
+#     from reserves_files_app.models import Match
+#     match = Match()
+#     match.course_code = course_code
+#     match.filename = file_name
+#     match.save()
+#     log.debug( 'save successful' )
+#     return HttpResponse( '200 / OK' )
+
+#     ## end def adder()
 
 
 def info( request ):
@@ -166,3 +210,27 @@ def version( request ):
     output = json.dumps( context, sort_keys=True, indent=2 )
     log.debug( f'output, ``{output}``' )
     return HttpResponse( output, content_type='application/json; charset=utf-8' )
+
+
+# ===========================
+# misc
+# ===========================
+
+## stripped down file_manager(), for reference
+
+# def file_manager( request, course_code: str, file_name: str ):
+#     """ Streams file to browser. """
+#     log.debug( '\n\nstarting file_manager()' )
+#     filepath = f'{settings_app.FILES_DIR_PATH}/{file_name}'
+#     ## check existence ----------------------------------------------
+#     path_obj = pathlib.Path( filepath )
+#     if path_obj.is_file() == False:
+#         return HttpResponseNotFound( f'404 / Not Found' )
+#     ## all good -----------------------------------------------------
+#     chunk_size = 512
+#     response = StreamingHttpResponse(
+#         FileWrapper( open(filepath, 'rb'), chunk_size ),
+#         content_type=mimetypes.guess_type(filepath)[0]
+#         )
+#     response['Content-Length'] = os.path.getsize(filepath)    
+#     return response
