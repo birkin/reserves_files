@@ -102,14 +102,14 @@ def adder( request ):
     matches: list = list( Match.objects.filter(course_code=course_code, filename=file_name) )
     if len( matches ) > 0:
         log.debug( 'not adding; item already exists' )
-        return HttpResponseBadRequest( '400 / Bad Request' )
+        return HttpResponse( '200 / OK; match_already_exists' )
     ## add match ----------------------------------------------------
     match = Match()
     match.course_code = course_code
     match.filename = file_name
     match.save()
     log.debug( 'save successful' )
-    return HttpResponse( '200 / OK' )
+    return HttpResponse( '201 / Created', status=201 )
 
     ## end def adder()
 
