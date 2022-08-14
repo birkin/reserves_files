@@ -55,6 +55,7 @@ def make_context( request, rq_now, info_txt ):
         'timestamp': str( rq_now )
         },
         'response': {
+            'ip': request.META.get('REMOTE_ADDR', 'unknown'),
             'version': info_txt,
             'timetaken': str( datetime.datetime.now() - rq_now )
         }
